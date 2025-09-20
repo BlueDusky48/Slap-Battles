@@ -1,0 +1,64 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- 📌 ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- 📌 Main Frame (square, slightly lower)
+local menuFrame = Instance.new("Frame")
+menuFrame.Name = "CustomMenu"
+menuFrame.Size = UDim2.new(0.22, 0, 0.22, 0) -- square shape
+menuFrame.Position = UDim2.new(0.5, 0, 0.55, 0) -- moved down a bit
+menuFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+menuFrame.BackgroundTransparency = 0.5
+menuFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+menuFrame.BorderSizePixel = 2
+menuFrame.Active = true
+menuFrame.Draggable = true
+menuFrame.Parent = ScreenGui
+
+-- 📌 Close the GUI Button
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Name = "CloseBtn"
+CloseBtn.Text = "Close the GUI"
+CloseBtn.Size = UDim2.new(0.75, 0, 0, 28)
+CloseBtn.Position = UDim2.new(0.5, 0, 0.25, 0)
+CloseBtn.AnchorPoint = Vector2.new(0.5, 0)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+CloseBtn.TextColor3 = Color3.new(1, 1, 1)
+CloseBtn.Font = Enum.Font.SourceSansBold
+CloseBtn.TextSize = 16
+CloseBtn.Parent = menuFrame
+
+CloseBtn.MouseButton1Click:Connect(function()
+	menuFrame:Destroy()
+end)
+
+-- 📌 Rocket Button
+local Button = Instance.new("TextButton")
+Button.Name = "ShotRocketBtn"
+Button.Text = "Rocket"
+Button.Size = UDim2.new(0.75, 0, 0, 36)
+Button.Position = UDim2.new(0.5, 0, 0.55, 0)
+Button.AnchorPoint = Vector2.new(0.5, 0)
+Button.BackgroundColor3 = Color3.fromRGB(30, 144, 255)
+Button.BorderSizePixel = 0
+Button.Font = Enum.Font.SourceSans
+Button.TextSize = 18
+Button.TextColor3 = Color3.new(1, 1, 1)
+Button.Parent = menuFrame
+
+-- 📌 Button Animation
+local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+local tween = TweenService:Create(Button, tweenInfo, { Position = UDim2.new(0.5, 0, 0.55, 0) })
+tween:Play()
+
+-- 📌 Rocket Launcher Trigger (RetroAbility remote)
+Button.MouseButton1Click:Connect(function()
+	local args = { "Rocket Launcher" }
+	game:GetService("ReplicatedStorage").RetroAbility:FireServer(unpack(args))
+end)
